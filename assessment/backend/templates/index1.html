@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Directory</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <a href="#">Users</a>
+        <a href="#">Albums</a>
+        <a href="#">Photos</a>
+    </div>
+    <div class="content">
+        <h1>User Directory</h1>
+        <div class="card-container" id="userCards">
+            <!-- User cards will be populated here -->
+        </div>
+    </div>
+
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalUserName"></h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <p><strong>Username:</strong> <span id="modalUsername"></span></p>
+            <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+            <p><strong>Phone:</strong> <span id="modalPhone"></span></p>
+            <p><strong>Website:</strong> <span id="modalWebsite"></span></p>
+            <button class="view-more-btn">View Albums</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <h1>Albums</h1>
+    <div class="card-container" id="albumCards">
+        <!-- Album cards will be populated here -->
+    </div>
+</div>
+
+<div class="modal" id="albumModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 id="modalAlbumTitle"></h4>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <button class="view-more-btn">View Photos</button>
+    </div>
+</div>
+{% endblock %}
