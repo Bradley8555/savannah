@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="welcome-container">
+        <h1>Welcome to the Platform</h1>
+        <p>Your one-stop solution for managing users, albums, and photos.</p>
+        <p>Please <a href="{% url 'account_login' %}">Log in</a> to use the following resources: </p>
+        <div class="links-container">
+            <a href="{% url 'users' %}" class="link-card">
+                <h2>Users</h2>
+                <p>Manage and view user information.</p>
+            </a>
+            <a href="{% url 'albums' %}" class="link-card">
+                <h2>Albums</h2>
+                <p>Explore and manage albums.</p>
+            </a>
+            <a href="{% url 'photos' %}" class="link-card">
+                <h2>Photos</h2>
+                <p>View and organize photos.</p>
+            </a>
+        </div>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

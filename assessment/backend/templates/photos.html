@@ -2,21 +2,24 @@
 
 {% block content %}
 <div class="content">
-    <h1>Photos</h1>
+    <div class="header">
+        <h1>Photos</h1>
+        <input type="text" id="searchInput" placeholder="Search photos..." onkeyup="searchPhotos()">
+    </div>
     <div class="card-container" id="photoCards">
         <!-- Photo cards will be populated here -->
     </div>
 </div>
 
-    <div class="modal" id="userModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalUserName"></h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <p><strong>Album Title:</strong> <span id="modalUsername"></span></p>
-            <p><strong>URL:</strong> <span id="modalEmail"></span></p>
-            <p><strong>Thumbnail URL:</strong> <span id="modalEmail"></span></p>
+<div class="modal" id="userModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalUserName"></h2>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
         </div>
+        <p><strong>Album Title:</strong> <span id="modalUsername"></span></p>
+        <p><strong>URL:</strong> <span id="modalEmail"></span></p>
+        <p><strong>Thumbnail URL:</strong> <span id="modalEmail"></span></p>
     </div>
+</div>
 {% endblock %}

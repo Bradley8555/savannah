@@ -9,14 +9,15 @@
 </head>
 <body>
 
-    <div class="sidebar">
+    <div class="navbar">
+        <a href="{% url 'index' %}">Home</a>
         <a href="{% url 'users' %}">Users</a>
         <a href="{% url 'albums' %}">Albums</a>
         <a href="{% url 'photos' %}">Photos</a>
+        <a href="{% url 'account_logout' %}">Logout</a>
     </div>
     {% block content %}
     {% endblock %}
     <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
-    

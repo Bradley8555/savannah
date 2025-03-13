@@ -3,8 +3,31 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
+    flex-direction: column;
     height: 100vh;
     background-color: #f9f9f9;
+}
+
+.navbar {
+    width: 100%;
+    background-color: #333;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    background-color: #007BFF;
 }
 
 .sidebar {
@@ -120,4 +143,98 @@ h1 {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  h2, h3 {
+    text-align: center;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  a {
+    color: #0073e6;
+  }
+
+.welcome-container {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.welcome-container h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.welcome-container p {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+}
+
+.links-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.link-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    width: 200px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.link-card h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.link-card p {
+    font-size: 1em;
+    color: #555;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
 }

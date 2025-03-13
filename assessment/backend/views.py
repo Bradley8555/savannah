@@ -29,6 +29,9 @@ def fetch_photos(request):
     except requests.exceptions.RequestException as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+def landing(request):
+    return render(request, 'landing.html')
+
 def index(request):
     return render(request, 'index.html')
 

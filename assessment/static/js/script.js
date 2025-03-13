@@ -18,27 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const albums = Array.isArray(albumsData) ? albumsData : albumsData.albums || [];
         const photos = Array.isArray(photosData) ? photosData : photosData.photos || [];
 
-        const usersMap = users.reduce((map, user) => {
-            map[user.id] = user.name;
-            return map;
-        }, {});
-
-        const albumsMap = albums.reduce((map, album) => {
-            map[album.id] = album;
-            return map;
-        }, {});
-
-        if (document.getElementById('userCards')) {
-            loadUserCards(users);
-        }
-
-        if (document.getElementById('albumCards')) {
-            loadAlbumCards(albums, usersMap);
-        }
-
-        if (document.getElementById('photoCards')) {
-            loadPhotoCards(photos, albumsMap);
-        }
+        loadPhotoCards(photos);
     } catch (error) {
         console.error('Error:', error);
     }
@@ -55,16 +35,30 @@ function loadUserCards(users) {
     `).join('');
 }
 
-function showUserModal(id, name, email, phone, website, address, companyName, catchPhrase, bs) {
-    document.getElementById('modalUserName').textContent = name;
-    document.getElementById('modalUsername').textContent = name;
-    document.getElementById('modalEmail').textContent = email;
-    document.getElementById('modalPhone').textContent = phone;
-    document.getElementById('modalWebsite').textContent = website;
-    document.getElementById('modalAddress').textContent = address;
-    document.getElementById('modalCompanyName').textContent = companyName;
-    document.getElementById('modalCatchPhrase').textContent = catchPhrase;
-    document.getElementById('modalBs').textContent = bs;
+let currentUserId = null;
+
+function showUserModal(user) {
+    const elements = {
+        modalUserName: user.name,
+        modalUsername: user.username,
+        modalEmail: user.email,
+        modalPhone: user.phone,
+        modalWebsite: user.website,
+        modalAddress: user.address ? `${user.address.street}, ${user.address.city}` : 'N/A',
+        modalCompanyName: user.company ? user.company.name : 'N/A',
+        modalCatchPhrase: user.company ? user.company.catchPhrase : 'N/A',
+        modalBs: user.company ? user.company.bs : 'N/A',
+    };
+
+    for (let id in elements) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = elements[id];
+        } else {
+            console.error(`Element with ID '${id}' not found.`);
+        }
+    }
+
     document.getElementById('userModal').style.display = 'block';
 }
 
@@ -74,40 +68,109 @@ function loadAlbumCards(albums, usersMap) {
         <div class="card">
             <h3>${album.title}</h3>
             <p>By: ${usersMap[album.userId] || 'Unknown'}</p>
-            <button class="view-more-btn" onclick="showAlbumModal('${album.title}')">View Photos</button>
+            <button class="view-more-btn" onclick="showAlbumModal('${album.title}', ${album.id})">View Photos</button>
         </div>
     `).join('');
 }
 
-function showAlbumModal(albumTitle) {
+function showAlbumModal(albumTitle, albumId) {
     document.getElementById('modalAlbumTitle').textContent = albumTitle;
+    loadAlbumPhotos(albumId);
     document.getElementById('albumModal').style.display = 'block';
 }
 
-function loadPhotoCards(photos, albumsMap) {
-    const container = document.getElementById('photoCards');
-    if (!container) {
-        console.error('photoCards element not found');
-        return;
-    }
-    container.innerHTML = photos.map(photo => {
-        const album = albumsMap[photo.albumId];
-        const albumTitle = album ? album.title : 'Unknown Album';
-        const shortUrl = photo.url ? new URL(photo.url).hostname : '';
+async function loadAlbumPhotos(albumId) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/photos/?albumId=${albumId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch photos');
+        }
 
-        return `
+        const photos = await response.json();
+        const container = document.getElementById('photoCards');
+        container.innerHTML = photos.map(photo => `
             <div class="photo-card">
-                <h4>${albumTitle}</h4>
                 <p>${photo.title}</p>
-                <a href="${photo.url}" target="_blank" title="${photo.url}">
-                    ${shortUrl}
-                </a>
+                <img src="${photo.thumbnailUrl}" alt="${photo.title}">
             </div>
-        `;
-    }).join('');
+        `).join('');
+    } catch (error) {
+        console.error('Error fetching photos:', error);
+    }
+}
+
+function loadPhotoCards(photos) {
+    const container = document.getElementById('photoCards');
+    container.innerHTML = photos.map(photo => `
+        <div class="photo-card">
+            <h4>${photo.title}</h4>
+            <img src="${photo.thumbnailUrl}" alt="${photo.title}">
+            <button class="view-more-btn" onclick="showPhotoModal(${photo.id}, '${photo.title}', '${photo.url}', '${photo.thumbnailUrl}')">View More</button>
+        </div>
+    `).join('');
+}
+
+function showPhotoModal(id, title, url, thumbnailUrl) {
+    document.getElementById('modalUserName').textContent = title;
+    document.getElementById('modalUsername').textContent = title;
+    document.getElementById('modalEmail').textContent = url;
+    document.getElementById('modalEmail').textContent = thumbnailUrl;
+
+    document.getElementById('userModal').style.display = 'flex';
 }
 
 function closeModal() {
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => modal.style.display = 'none');
+    document.getElementById('userModal').style.display = 'none';
+}
+
+function searchPhotos() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    const cards = document.getElementsByClassName('photo-card');
+
+    for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const title = card.getElementsByTagName('h4')[0].textContent.toLowerCase();
+        if (title.includes(filter)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    }
+}
+
+async function viewUserAlbums() {
+    if (!currentUserId) {
+        console.error('No user selected.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/albums/?userId=${currentUserId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch albums');
+        }
+
+        const albums = await response.json();
+        displayUserAlbums(albums);
+    } catch (error) {
+        console.error('Error fetching albums:', error);
+    }
+}
+
+function displayUserAlbums(albums) {
+    const container = document.getElementById('albumCards');
+    if (!container) {
+        console.error('albumCards element not found');
+        return;
+    }
+
+    container.innerHTML = albums.map(album => `
+        <div class="card">
+            <h3>${album.title}</h3>
+            <button class="view-more-btn" onclick="showAlbumModal('${album.title}', ${album.id})">View Photos</button>
+        </div>
+    `).join('');
+
+    closeModal(); // Hide the user modal and show the albums
 }

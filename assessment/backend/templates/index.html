@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="modal" id="userModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalUserName"></h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <p><strong>Username:</strong> <span id="modalUsername"></span></p>
-            <p><strong>Email:</strong> <span id="modalEmail"></span></p>
-            <p><strong>Phone:</strong> <span id="modalPhone"></span></p>
-            <p><strong>Website:</strong> <span id="modalWebsite"></span></p>
-            <button class="view-more-btn">View Albums</button>
-        </div>
+<div class="welcome-container">
+    <h1>Welcome to the Savannah Platform</h1>
+    <p>Your one-stop solution for managing users, albums, and photos.</p>
+    <div class="links-container">
+        <a href="{% url 'users' %}" class="link-card">
+            <h2>Users</h2>
+            <p>Manage and view user information.</p>
+        </a>
+        <a href="{% url 'albums' %}" class="link-card">
+            <h2>Albums</h2>
+            <p>Explore and manage albums.</p>
+        </a>
+        <a href="{% url 'photos' %}" class="link-card">
+            <h2>Photos</h2>
+            <p>View and organize photos.</p>
+        </a>
     </div>
+</div>
 {% endblock %}
